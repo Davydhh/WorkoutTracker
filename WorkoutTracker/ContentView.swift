@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-let exercises = Model().exercises
-
 struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
                 Text("Choose your workout exercises")
                     .navigationTitle("Exercises")
-                List(exercises) {
-                    exercise in ExerciseRow(exercise: exercise)
-                }
+                ExerciseListView()
                 NavigationLink(destination: Text("Destination"), label: { Text("Confirm")
                 })
             }

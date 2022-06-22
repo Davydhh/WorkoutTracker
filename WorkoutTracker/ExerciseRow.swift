@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ExerciseRow: View {
-    var exercise: Exercise
+    var name: String
+    var isSelected: Bool
+    var action: () -> Void
+    
     var body: some View {
-        Text(exercise.name)
+        Button(action: self.action) {
+            HStack {
+                Text(self.name)
+                if self.isSelected {
+                    Spacer()
+                    Image(systemName: "checkmark")
+                }
+            }
+        }
     }
 }
 
 struct ExerciseRow_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseRow(exercise: Model().exercises[0])
+        ExerciseRow(name: "Push Up", isSelected: false) {
+            return
+        }
     }
 }
