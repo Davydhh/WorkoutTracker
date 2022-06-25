@@ -7,13 +7,14 @@
 
 import SwiftUI
 
+let exercises = Model.init().exercises
+
 struct ExerciseListView: View {
-    @State var exercises: [String] = ["Push Up", "Pull Up", "Squat"]
-    @State var selections: [String] = []
+    @Binding var selections: [String]
     
     var body: some View {
         List {
-            ForEach(self.exercises, id: \.self) { exercise in
+            ForEach(exercises, id: \.self) { exercise in
                 ExerciseRow(name: exercise, isSelected: self.selections.contains(exercise)) {
                     if self.selections.contains(exercise) {
                         self.selections.removeAll(where: { $0 == exercise })
@@ -29,6 +30,14 @@ struct ExerciseListView: View {
 
 struct ExerciseListView_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseListView()
+        PreviewWrapper()
+    }
+}
+
+struct PreviewWrapper: View {
+    @State(initialValue: [String]()) var selections: [String]
+    
+    var body: some View {
+        ExerciseListView(selections: $selections)
     }
 }

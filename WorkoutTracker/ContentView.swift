@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var selections: [String] = []
+    
     var body: some View {
         NavigationView {
             VStack {
                 Text("Choose your workout exercises")
                     .navigationTitle("Exercises")
-                ExerciseListView()
-                NavigationLink(destination: Text("Destination"), label: { Text("Confirm")
+                ExerciseListView(selections: $selections)
+                NavigationLink(destination: CreateWorkoutView(selections: $selections), label: { Text("Confirm")
+                        .bold()
+                        .frame(width: 280, height: 50)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(10)
                 })
+                Spacer()
             }
         }
     }
