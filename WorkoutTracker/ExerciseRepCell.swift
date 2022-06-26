@@ -43,6 +43,8 @@ struct ExerciseRepCell: View {
                     .keyboardType(.numberPad)
                     .foregroundColor(.white)
                     .font(.title)
+                    .multilineTextAlignment(.center)
+                    .fixedSize()
                 Button(action: {
                     exerciseRepModel.incrementReps(name: exercise)
                 }) {
@@ -60,8 +62,7 @@ struct ExerciseRepCell: View {
 struct RepsButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding()
-            .frame(width: 50, height: 50)
+            .frame(width: 40, height: 40, alignment: .center)
             .cornerRadius(10)
             .foregroundColor(.white)
             .overlay(RoundedRectangle(cornerRadius: 6)
