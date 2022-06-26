@@ -12,8 +12,18 @@ struct CreateWorkoutView: View {
     @StateObject var exerciseReps = ExerciseRepModel()
     
     var body: some View {
-        ForEach(selections, id: \.self) { exercise in
-            ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
+        VStack() {
+            ForEach(selections, id: \.self) { exercise in
+                ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
+            }
+            NavigationLink(destination: Text("Test"), label: { Text("Confirm")
+                    .bold()
+                    .frame(width: 280, height: 50)
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }).frame(maxHeight: .infinity, alignment: .bottom)
+            Spacer()
         }
     }
 }
