@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CreateWorkoutView: View {
     @Binding var selections: [String]
+    @StateObject var exerciseReps = ExerciseRepModel()
     
     var body: some View {
         ForEach(selections, id: \.self) { exercise in
-            ExerciseRepCell(exercise: exercise)
+            ExerciseRepCell(exercise: exercise, exercisesReps: exerciseReps)
         }
     }
 }
@@ -27,6 +28,6 @@ struct CreateWorkoutPreviewWrapper: View {
     @State(initialValue: ["Push Up", "Squat"]) var selections: [String]
     
     var body: some View {
-        CreateWorkoutView(selections: $selections)
+        CreateWorkoutView(selections: $selections, exerciseReps: ExerciseRepModel())
     }
 }

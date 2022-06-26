@@ -10,8 +10,13 @@ import Foundation
 class ExerciseRepModel: ObservableObject {
     @Published var exercisesReps: [String: Int]
     
+    
     init() {
         exercisesReps = [:]
+        
+        for exercise in Model().exercises {
+            exercisesReps[exercise] = 0
+        }
     }
     
     func setExerciseRep(name: String, n: Int) {

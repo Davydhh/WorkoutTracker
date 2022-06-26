@@ -10,6 +10,7 @@ import Combine
 
 struct ExerciseRepCell: View {
     let exercise: String
+    @ObservedObject var exercisesReps: ExerciseRepModel
     
     var body: some View {
         ZStack(alignment: .leading){
@@ -31,14 +32,6 @@ struct ExerciseRepCell: View {
 
 struct ExerciseRepCell_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseRepCellPreviewWrapper()
-    }
-}
-
-struct ExerciseRepCellPreviewWrapper: View {
-    @State(initialValue: ["Push Up": 0]) var exercisesRep: [String: Int]
-    
-    var body: some View {
-        ExerciseRepCell(exercise: "Push Up")
+        ExerciseRepCell(exercise: "Push Up", exercisesReps: ExerciseRepModel())
     }
 }
