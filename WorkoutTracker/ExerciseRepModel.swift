@@ -10,7 +10,6 @@ import Foundation
 class ExerciseRepModel: ObservableObject {
     @Published var exercisesReps: [String: Int]
     
-    
     init() {
         exercisesReps = [:]
         
@@ -19,7 +18,11 @@ class ExerciseRepModel: ObservableObject {
         }
     }
     
-    func setExerciseRep(name: String, n: Int) {
-        exercisesReps[name] = n
+    func incrementReps(name: String) {
+        exercisesReps[name] = exercisesReps[name]! + 1
+    }
+    
+    func decrementReps(name: String) {
+        exercisesReps[name] = exercisesReps[name]! - 1
     }
 }

@@ -13,7 +13,7 @@ struct CreateWorkoutView: View {
     
     var body: some View {
         ForEach(selections, id: \.self) { exercise in
-            ExerciseRepCell(exercise: exercise, exercisesReps: exerciseReps)
+            ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
         }
     }
 }
