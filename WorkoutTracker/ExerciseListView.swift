@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-let exercises = Model.init().exercises
+var exercises = Model.init().exercises
 
 struct ExerciseListView: View {
     @Binding var selections: [String]
+    @State private var isEditable = false
     
     var body: some View {
         List {
@@ -24,6 +25,19 @@ struct ExerciseListView: View {
                     }
                 }
             }
+            .onMove(perform: move)
+            .onLongPressGesture {
+                withAnimation {
+                    self.isEditable = true
+                }
+            }
+        }
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        exercises.move(fromOffsets: source, toOffset: destination)
+        withAnimation {
+            isEditable = false
         }
     }
 }

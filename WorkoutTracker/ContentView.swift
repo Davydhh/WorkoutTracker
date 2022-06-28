@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Choose your workout exercises")
+                Text("Choose your workout exercises and their order")
                     .navigationTitle("Exercises")
                 ExerciseListView(selections: $selections)
                 NavigationLink(destination: CreateWorkoutView(selections: $selections), label: { Text("Confirm")
