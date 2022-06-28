@@ -16,7 +16,7 @@ struct CreateWorkoutView: View {
             ForEach(selections, id: \.self) { exercise in
                 ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
             }
-            NavigationLink(destination: Text("Test"), label: { Text("Confirm")
+            NavigationLink(destination: CameraController(), label: { Text("Confirm")
                     .bold()
                     .frame(width: 280, height: 50)
                     .foregroundColor(.white)
@@ -25,6 +25,20 @@ struct CreateWorkoutView: View {
             }).frame(maxHeight: .infinity, alignment: .bottom)
             Spacer()
         }
+    }
+}
+
+
+struct CameraController: UIViewControllerRepresentable {
+    typealias UIViewControllerType = CameraViewController
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<CameraController>) -> CameraController.UIViewControllerType {
+        let sb = UIStoryboard(name: "CameraController", bundle: nil)
+        let viewController = sb.instantiateViewController(identifier: "Camera") as! CameraViewController
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: CameraController.UIViewControllerType, context: UIViewControllerRepresentableContext<CameraController>) {
     }
 }
 
