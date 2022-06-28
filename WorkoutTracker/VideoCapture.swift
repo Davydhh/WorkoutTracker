@@ -1,10 +1,13 @@
 import Foundation
 import AVFoundation
 
-class VideoCapture {
+class VideoCapture: NSObject {
     let captureSession = AVCaptureSession()
+    let videoOutput = AVCaptureVideoDataOutput()
     
-    init() {
+    override init() {
+        super.init()
+        
         guard let captureDevice = AVCaptureDevice.default(for: .video),
               let input = try? AVCaptureDeviceInput(device: captureDevice) else {
             return
@@ -12,9 +15,22 @@ class VideoCapture {
         
         captureSession.sessionPreset = AVCaptureSession.Preset.high
         captureSession.addInput(input)
+        
+        captureSession.addOutput(videoOutput)
+        videoOutput.alwaysDiscardsLateVideoFrames = true
     }
     
     func startCaptureSession() {
         captureSession.startRunning()
+        
+        videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoDispatchQueue"))
+    }
+}
+
+extension VideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        let videoData = sampleBuffer
+        
+        print(videoData)
     }
 }
