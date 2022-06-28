@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D915373A286B9546003549F1 /* PullUp.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D9153739286B9546003549F1 /* PullUp.mlmodel */; };
 		D915373E286BA1A2003549F1 /* CameraController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D915373D286BA1A2003549F1 /* CameraController.storyboard */; };
 		D9153740286BA463003549F1 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D915373F286BA463003549F1 /* CameraViewController.swift */; };
+		D9153764286BABED003549F1 /* PullUp.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D9153763286BABED003549F1 /* PullUp.mlmodel */; };
+		D9153766286BAC34003549F1 /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9153765286BAC34003549F1 /* VideoCapture.swift */; };
 		D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515828639B69003FC9AB /* ExerciseListView.swift */; };
 		D947515D2863AA4C003FC9AB /* CreateWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */; };
 		D94751612863ACC2003FC9AB /* ExerciseRepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */; };
@@ -23,9 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D9153739286B9546003549F1 /* PullUp.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = PullUp.mlmodel; path = ../../../PullUp.mlmodel; sourceTree = "<group>"; };
 		D915373D286BA1A2003549F1 /* CameraController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CameraController.storyboard; sourceTree = "<group>"; };
 		D915373F286BA463003549F1 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		D9153763286BABED003549F1 /* PullUp.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = PullUp.mlmodel; path = ../../../PullUp.mlmodel; sourceTree = "<group>"; };
+		D9153765286BAC34003549F1 /* VideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
 		D947515828639B69003FC9AB /* ExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListView.swift; sourceTree = "<group>"; };
 		D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutView.swift; sourceTree = "<group>"; };
 		D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepCell.swift; sourceTree = "<group>"; };
@@ -50,10 +52,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D9153738286B9533003549F1 /* Model */ = {
+		D9153762286BABE2003549F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D9153739286B9546003549F1 /* PullUp.mlmodel */,
+				D9153763286BABED003549F1 /* PullUp.mlmodel */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -77,7 +79,7 @@
 		D9C15165286254DF00AF179A /* WorkoutTracker */ = {
 			isa = PBXGroup;
 			children = (
-				D9153738286B9533003549F1 /* Model */,
+				D9153762286BABE2003549F1 /* Model */,
 				D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */,
 				D9C15166286254DF00AF179A /* WorkoutTrackerApp.swift */,
 				D9C15168286254DF00AF179A /* ContentView.swift */,
@@ -90,6 +92,7 @@
 				D9C1516C286254E200AF179A /* Preview Content */,
 				D915373D286BA1A2003549F1 /* CameraController.storyboard */,
 				D915373F286BA463003549F1 /* CameraViewController.swift */,
+				D9153765286BAC34003549F1 /* VideoCapture.swift */,
 			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
@@ -178,10 +181,11 @@
 				D94751612863ACC2003FC9AB /* ExerciseRepCell.swift in Sources */,
 				D9C15169286254DF00AF179A /* ContentView.swift in Sources */,
 				D947515D2863AA4C003FC9AB /* CreateWorkoutView.swift in Sources */,
-				D915373A286B9546003549F1 /* PullUp.mlmodel in Sources */,
+				D9153766286BAC34003549F1 /* VideoCapture.swift in Sources */,
 				D96BDAEB28676B9D00ED2C53 /* ExerciseRepModel.swift in Sources */,
 				D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */,
 				D9C15167286254DF00AF179A /* WorkoutTrackerApp.swift in Sources */,
+				D9153764286BABED003549F1 /* PullUp.mlmodel in Sources */,
 				D96BDAED28676EF900ED2C53 /* ExerciseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,6 +318,7 @@
 				DEVELOPMENT_TEAM = 8GJ448953R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera used for activity recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -343,6 +348,7 @@
 				DEVELOPMENT_TEAM = 8GJ448953R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera used for activity recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
