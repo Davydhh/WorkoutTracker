@@ -27,6 +27,15 @@ class CameraViewController: UIViewController {
         videoCapture.predictor.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 
     func setUpVideopreview() {
         videoCapture.startCaptureSession()
@@ -34,6 +43,7 @@ class CameraViewController: UIViewController {
         
         guard let previewLayer = previewLayer else { return }
         
+        previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
         previewLayer.frame = view.frame
         
