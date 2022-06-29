@@ -45,19 +45,17 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: PredictorDelegate {
     func predictor(_ predictor: Predictor, didLabelAction action: String, with confidence: Double) {
-        print(action, confidence)
-//        if action == "pull up" && confidence > 0.7 && isPullUpDetected == false {
-//            print("Pull up detected")
-//            isPullUpDetected = true
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                self.isPullUpDetected = false
-//            }
-//
-//            DispatchQueue.main.async {
-//                AudioServicesPlayAlertSound(SystemSoundID(1322))
-//            }
-//        }
+        if action == "pull up" && confidence > 0.9 && isPullUpDetected == false {
+            isPullUpDetected = true
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.isPullUpDetected = false
+            }
+
+            DispatchQueue.main.async {
+                AudioServicesPlayAlertSound(SystemSoundID(1322))
+            }
+        }
     }
     
     func predictor(_ predictor: Predictor, didFunfNewREcongizedPoints points: [CGPoint]) {
