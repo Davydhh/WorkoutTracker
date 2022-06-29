@@ -65,7 +65,7 @@ class CameraViewController: UIViewController {
         guard let videoDevice = AVCaptureDevice.default(
             .builtInWideAngleCamera,
             for: .video,
-            position: .front)
+            position: .back)
         else { return }
         videoDevice.set(frameRate: 30)
         guard let deviceInput = try? AVCaptureDeviceInput(device: videoDevice)
@@ -87,11 +87,10 @@ class CameraViewController: UIViewController {
 extension CameraViewController: PredictorDelegate {
     func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double) {
         print(action, confidence)
-        if action == "pull up" && confidence > 0.7 && isPullUpDetected == false {
-            print("Pull up detected")
+        if action == "pull up" && confidence > 0.95 && isPullUpDetected == false {
             isPullUpDetected = true
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.isPullUpDetected = false
             }
 
