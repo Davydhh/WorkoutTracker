@@ -16,7 +16,7 @@ struct CreateWorkoutView: View {
             ForEach(selections, id: \.self) { exercise in
                 ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
             }
-            NavigationLink(destination: CameraController(), label: { Text("Confirm")
+            NavigationLink(destination: CameraView(), label: { Text("Confirm")
                     .bold()
                     .frame(width: 280, height: 50)
                     .foregroundColor(.white)

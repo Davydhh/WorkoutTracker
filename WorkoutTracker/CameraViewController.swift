@@ -9,83 +9,70 @@ import UIKit
 import AVFoundation
 import AudioToolbox
 
-class CameraViewController: UIViewController {
-    
-    let videoCapture = VideoCapture()
-    
-    var previewLayer: AVCaptureVideoPreviewLayer?
-    
-    var pointsLayer = CAShapeLayer()
-    
-    var isPullUpDetected = false
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setUpVideopreview()
-        
-        videoCapture.predictor.delegate = self
+final class CameraViewClass: UIView {
+    override class var layerClass: AnyClass {
+        AVCaptureVideoPreviewLayer.self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
-    func setUpVideopreview() {
-        videoCapture.startCaptureSession()
-        previewLayer = AVCaptureVideoPreviewLayer(session: videoCapture.captureSession)
-        
-        guard let previewLayer = previewLayer else { return }
-        
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-        previewLayer.frame = view.frame
-        
-        view.layer.addSublayer(pointsLayer)
-        pointsLayer.frame = view.frame
-        pointsLayer.strokeColor = UIColor.blue.cgColor
+    var previewLayer: AVCaptureVideoPreviewLayer {
+        layer as! AVCaptureVideoPreviewLayer
     }
 }
 
-extension CameraViewController: PredictorDelegate {
-    func predictor(_ predictor: Predictor, didLabelAction action: String, with confidence: Double) {
-        if action == "pull up" && confidence > 0.9 && isPullUpDetected == false {
-            isPullUpDetected = true
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.isPullUpDetected = false
+class CameraViewController: UIViewController {
+    private var cameraSession: AVCaptureSession?
+    var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
+    
+    private let cameraQueue = DispatchQueue(
+        label: "CameraOutput",
+        qos: .userInteractive
+    )
+    
+    override func loadView() {
+        view = CameraViewClass()
+    }
+    
+    private var cameraView: CameraViewClass { view as! CameraViewClass }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        do {
+            if cameraSession == nil {
+                try prepareAVSession()
+                cameraView.previewLayer.session = cameraSession
+                cameraView.previewLayer.videoGravity = .resizeAspectFill
             }
-
-            DispatchQueue.main.async {
-                AudioServicesPlayAlertSound(SystemSoundID(1322))
-            }
+            cameraSession?.startRunning()
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
-    func predictor(_ predictor: Predictor, didFunfNewREcongizedPoints points: [CGPoint]) {
-        guard let previewLayer = previewLayer else { return }
-        
-        let convertedPoints = points.map {
-            previewLayer.layerPointConverted(fromCaptureDevicePoint: $0)
-        }
-        
-        let combinePath = CGMutablePath()
-        
-        for point in convertedPoints {
-            let doPath = UIBezierPath(ovalIn: CGRect(x: point.x, y: point.y, width: 10, height: 10))
-            combinePath.addPath(doPath.cgPath)
-        }
-        
-        pointsLayer.path = combinePath
-        
-        DispatchQueue.main.async {
-            self.pointsLayer.didChangeValue(for: \.path)
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        cameraSession?.stopRunning()
+        super.viewWillDisappear(animated)
+    }
+    
+    func prepareAVSession() throws {
+        let session = AVCaptureSession()
+        session.beginConfiguration()
+        session.sessionPreset = AVCaptureSession.Preset.high
+        guard let videoDevice = AVCaptureDevice.default(
+            .builtInWideAngleCamera,
+            for: .video,
+            position: .front)
+        else { return }
+        guard let deviceInput = try? AVCaptureDeviceInput(device: videoDevice)
+        else { return }
+        guard session.canAddInput(deviceInput)
+        else { return }
+        session.addInput(deviceInput)
+        let dataOutput = AVCaptureVideoDataOutput()
+        if session.canAddOutput(dataOutput) {
+            session.addOutput(dataOutput)
+            dataOutput.setSampleBufferDelegate(delegate, queue: cameraQueue)
+        } else { return }
+        session.commitConfiguration()
+        cameraSession = session
     }
 }
