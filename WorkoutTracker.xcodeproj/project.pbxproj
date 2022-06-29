@@ -16,6 +16,7 @@
 		D94751612863ACC2003FC9AB /* ExerciseRepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */; };
 		D96BDAEB28676B9D00ED2C53 /* ExerciseRepModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96BDAEA28676B9D00ED2C53 /* ExerciseRepModel.swift */; };
 		D96BDAED28676EF900ED2C53 /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96BDAEC28676EF900ED2C53 /* ExerciseModel.swift */; };
+		D98A36D4286CB6AB00E30EF3 /* Predictor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98A36D3286CB6AB00E30EF3 /* Predictor.swift */; };
 		D9C15167286254DF00AF179A /* WorkoutTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C15166286254DF00AF179A /* WorkoutTrackerApp.swift */; };
 		D9C15169286254DF00AF179A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C15168286254DF00AF179A /* ContentView.swift */; };
 		D9C1516B286254E200AF179A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9C1516A286254E200AF179A /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 		D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepCell.swift; sourceTree = "<group>"; };
 		D96BDAEA28676B9D00ED2C53 /* ExerciseRepModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepModel.swift; sourceTree = "<group>"; };
 		D96BDAEC28676EF900ED2C53 /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
+		D98A36D3286CB6AB00E30EF3 /* Predictor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Predictor.swift; sourceTree = "<group>"; };
 		D9C15163286254DF00AF179A /* WorkoutTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkoutTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9C15166286254DF00AF179A /* WorkoutTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerApp.swift; sourceTree = "<group>"; };
 		D9C15168286254DF00AF179A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				D9153763286BABED003549F1 /* PullUp.mlmodel */,
+				D98A36D3286CB6AB00E30EF3 /* Predictor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */,
 				D9C15167286254DF00AF179A /* WorkoutTrackerApp.swift in Sources */,
 				D9153764286BABED003549F1 /* PullUp.mlmodel in Sources */,
+				D98A36D4286CB6AB00E30EF3 /* Predictor.swift in Sources */,
 				D96BDAED28676EF900ED2C53 /* ExerciseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

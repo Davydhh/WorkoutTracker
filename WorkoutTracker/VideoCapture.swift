@@ -5,6 +5,8 @@ class VideoCapture: NSObject {
     let captureSession = AVCaptureSession()
     let videoOutput = AVCaptureVideoDataOutput()
     
+    let predictor = Predictor()
+    
     override init() {
         super.init()
         
@@ -29,8 +31,6 @@ class VideoCapture: NSObject {
 
 extension VideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        let videoData = sampleBuffer
-        
-        print(videoData)
+        predictor.estimation(sampleBuffer: sampleBuffer)
     }
 }
