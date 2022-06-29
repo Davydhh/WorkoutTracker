@@ -6,11 +6,14 @@ import Vision
 
 struct CameraViewWrapper: UIViewControllerRepresentable {
     var poseEstimator: PoseEstimator
+    
     func makeUIViewController(context: Context) -> some UIViewController {
         let cvc = CameraViewController()
         cvc.delegate = poseEstimator
+        cvc.poseEstimator = poseEstimator
         return cvc
     }
+    
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
 }

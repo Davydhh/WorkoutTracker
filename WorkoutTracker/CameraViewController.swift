@@ -22,6 +22,9 @@ final class CameraViewClass: UIView {
 class CameraViewController: UIViewController {
     private var cameraSession: AVCaptureSession?
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
+    var poseEstimator: PoseEstimator?
+    
+    var isPullUpDetected = false
     
     private let cameraQueue = DispatchQueue(
         label: "CameraOutput",
@@ -46,6 +49,8 @@ class CameraViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
+        
+        self.poseEstimator?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -62,12 +67,14 @@ class CameraViewController: UIViewController {
             for: .video,
             position: .front)
         else { return }
+        videoDevice.set(frameRate: 30)
         guard let deviceInput = try? AVCaptureDeviceInput(device: videoDevice)
         else { return }
         guard session.canAddInput(deviceInput)
         else { return }
         session.addInput(deviceInput)
         let dataOutput = AVCaptureVideoDataOutput()
+//        dataOutput.alwaysDiscardsLateVideoFrames = true
         if session.canAddOutput(dataOutput) {
             session.addOutput(dataOutput)
             dataOutput.setSampleBufferDelegate(delegate, queue: cameraQueue)
@@ -75,4 +82,41 @@ class CameraViewController: UIViewController {
         session.commitConfiguration()
         cameraSession = session
     }
+}
+
+extension CameraViewController: PredictorDelegate {
+    func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double) {
+        print(action, confidence)
+        if action == "pull up" && confidence > 0.7 && isPullUpDetected == false {
+            print("Pull up detected")
+            isPullUpDetected = true
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.isPullUpDetected = false
+            }
+
+            DispatchQueue.main.async {
+                AudioServicesPlayAlertSound(SystemSoundID(1322))
+            }
+        }
+    }
+}
+
+extension AVCaptureDevice {
+    func set(frameRate: Double) {
+    guard let range = activeFormat.videoSupportedFrameRateRanges.first,
+        range.minFrameRate...range.maxFrameRate ~= frameRate
+        else {
+            print("Requested FPS is not supported by the device's activeFormat !")
+            return
+    }
+
+    do { try lockForConfiguration()
+        activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
+        activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
+        unlockForConfiguration()
+    } catch {
+        print("LockForConfiguration failed with error: \(error.localizedDescription)")
+    }
+  }
 }
