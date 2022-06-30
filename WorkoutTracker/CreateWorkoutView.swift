@@ -10,20 +10,23 @@ import SwiftUI
 struct CreateWorkoutView: View {
     @Binding var selections: [String]
     @StateObject var exerciseReps = ExerciseRepModel()
+    @Binding var rootIsActive : Bool
     
     var body: some View {
         VStack() {
             ForEach(selections, id: \.self) { exercise in
                 ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
             }
-            NavigationLink(destination: CameraView(), label: { Text("Confirm")
+            NavigationLink(destination: CameraView(shouldPopToRootView: self.$rootIsActive), label: { Text("Confirm")
                     .bold()
                     .frame(width: 280, height: 50)
                     .foregroundColor(.white)
                     .background(Color.blue)
                     .cornerRadius(10)
-            }).frame(maxHeight: .infinity, alignment: .bottom)
-            Spacer()
+            })
+            .isDetailLink(false)
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .padding()
         }
     }
 }
@@ -50,8 +53,9 @@ struct CreateWorkoutView_Previews: PreviewProvider {
 
 struct CreateWorkoutPreviewWrapper: View {
     @State(initialValue: ["Push Up", "Squat"]) var selections: [String]
+    @State(initialValue: true) var isActive: Bool
     
     var body: some View {
-        CreateWorkoutView(selections: $selections, exerciseReps: ExerciseRepModel())
+        CreateWorkoutView(selections: $selections, exerciseReps: ExerciseRepModel(), rootIsActive: $isActive)
     }
 }

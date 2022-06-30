@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selections: [String] = []
+    @State var isActive: Bool = false
     
     var body: some View {
         NavigationView {
@@ -16,14 +17,15 @@ struct ContentView: View {
                 Text("Choose your workout exercises and their order")
                     .navigationTitle("Exercises")
                 ExerciseListView(selections: $selections)
-                NavigationLink(destination: CreateWorkoutView(selections: $selections), label: { Text("Confirm")
+                NavigationLink(destination: CreateWorkoutView(selections: $selections, rootIsActive: self.$isActive), isActive: self.$isActive, label: { Text("Confirm")
                         .bold()
                         .frame(width: 280, height: 50)
                         .foregroundColor(.white)
                         .background(Color.blue)
                         .cornerRadius(10)
                 })
-                Spacer()
+                .isDetailLink(false)
+                .padding()
             }
         }
     }

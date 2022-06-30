@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CameraView: View {
     @StateObject var poseEstimator = PoseEstimator()
+    @Binding var shouldPopToRootView: Bool
     
     @State var showStick = true
     
@@ -25,8 +26,13 @@ struct CameraView: View {
                     }
                 }
             }
-            Button(action: {}) {
+            Button(action: { self.shouldPopToRootView = false }) {
                 Text("Finish")
+                    .bold()
+                    .frame(width: 280, height: 50)
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(10)
             }.padding()
         }
     }
@@ -34,6 +40,15 @@ struct CameraView: View {
 
 struct CameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraView()
+        CameraViewWrapperPreview()
+    }
+}
+
+
+struct CameraViewWrapperPreview: View {
+    @State(initialValue: true) var isActive
+    
+    var body: some View {
+        CameraView(shouldPopToRootView: $isActive)
     }
 }
