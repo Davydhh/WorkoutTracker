@@ -3,7 +3,7 @@ import AVFoundation
 import Vision
 import Combine
 
-typealias ThrowingClassifier = PullUp
+typealias ThrowingClassifier = PullUpClassifier
 
 protocol PredictorDelegate: AnyObject {
     func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double)

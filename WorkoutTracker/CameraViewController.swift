@@ -1,10 +1,3 @@
-//
-//  CameraViewController.swift
-//  WorkoutTracker
-//
-//  Created by utente on 28/06/22.
-//
-
 import UIKit
 import AVFoundation
 import AudioToolbox
@@ -53,9 +46,15 @@ class CameraViewController: UIViewController {
         self.poseEstimator?.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         cameraSession?.stopRunning()
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     func prepareAVSession() throws {
@@ -74,7 +73,7 @@ class CameraViewController: UIViewController {
         else { return }
         session.addInput(deviceInput)
         let dataOutput = AVCaptureVideoDataOutput()
-//        dataOutput.alwaysDiscardsLateVideoFrames = true
+        dataOutput.alwaysDiscardsLateVideoFrames = true
         if session.canAddOutput(dataOutput) {
             session.addOutput(dataOutput)
             dataOutput.setSampleBufferDelegate(delegate, queue: cameraQueue)

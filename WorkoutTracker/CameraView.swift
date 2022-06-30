@@ -9,15 +9,31 @@ import SwiftUI
 
 struct CameraView: View {
     @StateObject var poseEstimator = PoseEstimator()
-        
-        var body: some View {
-            VStack {
-                ZStack {
-                    GeometryReader { geo in
-                        CameraViewWrapper(poseEstimator: poseEstimator)
+    
+    @State var showStick = true
+    
+    var body: some View {
+        VStack {
+            ZStack {
+                GeometryReader { geo in
+                    CameraViewWrapper(poseEstimator: poseEstimator)
+                    Button(action: { showStick = !showStick }) {
+                        Text("Show stick")
+                    }.padding()
+                    if showStick {
                         StickFigureView(poseEstimator: poseEstimator, size: geo.size)
                     }
-                }.frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 1920 / 1080, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                }
             }
+            Button(action: {}) {
+                Text("Finish")
+            }.padding()
         }
+    }
+}
+
+struct CameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView()
+    }
 }

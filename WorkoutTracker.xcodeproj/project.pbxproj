@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D9153740286BA463003549F1 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D915373F286BA463003549F1 /* CameraViewController.swift */; };
-		D9153764286BABED003549F1 /* PullUp.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D9153763286BABED003549F1 /* PullUp.mlmodel */; };
 		D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515828639B69003FC9AB /* ExerciseListView.swift */; };
 		D947515D2863AA4C003FC9AB /* CreateWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */; };
 		D94751612863ACC2003FC9AB /* ExerciseRepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */; };
@@ -19,6 +18,7 @@
 		D98A36DA286CE9F500E30EF3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98A36D9286CE9F500E30EF3 /* Shape.swift */; };
 		D98A36DC286CEA2000E30EF3 /* StickFigureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98A36DB286CEA2000E30EF3 /* StickFigureView.swift */; };
 		D98A36DE286CEAA600E30EF3 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98A36DD286CEAA600E30EF3 /* CameraView.swift */; };
+		D99B7D29286E444B00846452 /* PullUpClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = D99B7D28286E444B00846452 /* PullUpClassifier.mlmodel */; };
 		D9C15167286254DF00AF179A /* WorkoutTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C15166286254DF00AF179A /* WorkoutTrackerApp.swift */; };
 		D9C15169286254DF00AF179A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C15168286254DF00AF179A /* ContentView.swift */; };
 		D9C1516B286254E200AF179A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9C1516A286254E200AF179A /* Assets.xcassets */; };
@@ -28,7 +28,6 @@
 
 /* Begin PBXFileReference section */
 		D915373F286BA463003549F1 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
-		D9153763286BABED003549F1 /* PullUp.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = PullUp.mlmodel; path = ../../../PullUp.mlmodel; sourceTree = "<group>"; };
 		D947515828639B69003FC9AB /* ExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListView.swift; sourceTree = "<group>"; };
 		D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutView.swift; sourceTree = "<group>"; };
 		D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepCell.swift; sourceTree = "<group>"; };
@@ -39,6 +38,7 @@
 		D98A36D9286CE9F500E30EF3 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		D98A36DB286CEA2000E30EF3 /* StickFigureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickFigureView.swift; sourceTree = "<group>"; };
 		D98A36DD286CEAA600E30EF3 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		D99B7D28286E444B00846452 /* PullUpClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = PullUpClassifier.mlmodel; path = ../../../CreateML/PullUpClassifier.mlmodel; sourceTree = "<group>"; };
 		D9C15163286254DF00AF179A /* WorkoutTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkoutTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9C15166286254DF00AF179A /* WorkoutTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerApp.swift; sourceTree = "<group>"; };
 		D9C15168286254DF00AF179A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 		D9153762286BABE2003549F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D9153763286BABED003549F1 /* PullUp.mlmodel */,
+				D99B7D28286E444B00846452 /* PullUpClassifier.mlmodel */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -94,14 +94,14 @@
 				D94751602863ACC2003FC9AB /* ExerciseRepCell.swift */,
 				D96BDAEA28676B9D00ED2C53 /* ExerciseRepModel.swift */,
 				D96BDAEC28676EF900ED2C53 /* ExerciseModel.swift */,
-				D9C1516A286254E200AF179A /* Assets.xcassets */,
-				D9C1516C286254E200AF179A /* Preview Content */,
 				D915373F286BA463003549F1 /* CameraViewController.swift */,
 				D98A36D5286CE97C00E30EF3 /* CameraViewWrapper.swift */,
 				D98A36D7286CE9AA00E30EF3 /* PoseEstimator.swift */,
 				D98A36D9286CE9F500E30EF3 /* Shape.swift */,
 				D98A36DB286CEA2000E30EF3 /* StickFigureView.swift */,
 				D98A36DD286CEAA600E30EF3 /* CameraView.swift */,
+				D9C1516A286254E200AF179A /* Assets.xcassets */,
+				D9C1516C286254E200AF179A /* Preview Content */,
 			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
@@ -191,11 +191,11 @@
 				D9C15169286254DF00AF179A /* ContentView.swift in Sources */,
 				D947515D2863AA4C003FC9AB /* CreateWorkoutView.swift in Sources */,
 				D96BDAEB28676B9D00ED2C53 /* ExerciseRepModel.swift in Sources */,
+				D99B7D29286E444B00846452 /* PullUpClassifier.mlmodel in Sources */,
 				D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */,
 				D9C15167286254DF00AF179A /* WorkoutTrackerApp.swift in Sources */,
 				D98A36DA286CE9F500E30EF3 /* Shape.swift in Sources */,
 				D98A36DC286CEA2000E30EF3 /* StickFigureView.swift in Sources */,
-				D9153764286BABED003549F1 /* PullUp.mlmodel in Sources */,
 				D98A36DE286CEAA600E30EF3 /* CameraView.swift in Sources */,
 				D96BDAED28676EF900ED2C53 /* ExerciseModel.swift in Sources */,
 				D98A36D8286CE9AA00E30EF3 /* PoseEstimator.swift in Sources */,
