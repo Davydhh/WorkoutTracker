@@ -19,7 +19,13 @@ struct CameraView: View {
                 GeometryReader { geo in
                     CameraViewWrapper(poseEstimator: poseEstimator)
                     Button(action: { showStick = !showStick }) {
-                        Text("Show stick")
+                        if showStick {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 30.0))
+                        } else {
+                            Image(systemName: "person")
+                                .font(.system(size: 56.0))
+                        }
                     }.padding()
                     if showStick {
                         StickFigureView(poseEstimator: poseEstimator, size: geo.size)
