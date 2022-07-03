@@ -10,14 +10,18 @@ import SwiftUI
 struct CameraView: View {
     @StateObject var poseEstimator = PoseEstimator()
     @Binding var shouldPopToRootView: Bool
-    
+    @ObservedObject var exerciseReps: ExerciseRepModel
+    @Binding var selections: [String]
     @State var showStick = true
     
     var body: some View {
         VStack {
+            if (!selections.isEmpty) {
+                Text(selections.first!)
+            }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(poseEstimator: poseEstimator)
+                    CameraViewWrapper(exerciseReps: exerciseReps, poseEstimator: poseEstimator)
                     Button(action: { showStick = !showStick }) {
                         if showStick {
                             Image(systemName: "person.fill")
@@ -32,7 +36,10 @@ struct CameraView: View {
                     }
                 }
             }
-            Button(action: { self.shouldPopToRootView = false }) {
+            Button(action: {
+                self.shouldPopToRootView = false
+                selections.removeAll()
+            }) {
                 Text("Finish")
                     .bold()
                     .frame(width: 280, height: 50)
@@ -53,8 +60,9 @@ struct CameraView_Previews: PreviewProvider {
 
 struct CameraViewWrapperPreview: View {
     @State(initialValue: true) var isActive
+    @State(initialValue: ["Pull Up"]) var selections
     
     var body: some View {
-        CameraView(shouldPopToRootView: $isActive)
+        CameraView(shouldPopToRootView: $isActive, exerciseReps: ExerciseRepModel(), selections: $selections)
     }
 }

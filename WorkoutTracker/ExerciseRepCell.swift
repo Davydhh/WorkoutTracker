@@ -24,7 +24,7 @@ struct ExerciseRepCell: View {
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Button(action: {
-                    guard exerciseRepModel.exercisesReps[exercise]! == 0 else {
+                    guard exerciseRepModel.exercisesReps[exercise]! == 1 else {
                         showingAlert = false
                         exerciseRepModel.decrementReps(name: exercise)
                         return
@@ -35,7 +35,7 @@ struct ExerciseRepCell: View {
                     Text("-")
                         .font(.title)
                 }
-                .alert("Reps can't be less than zero", isPresented: $showingAlert) {
+                .alert("Reps can't be less equal to zero", isPresented: $showingAlert) {
                     Button("OK", role: .cancel) { }
                 }
                 .buttonStyle(RepsButton())

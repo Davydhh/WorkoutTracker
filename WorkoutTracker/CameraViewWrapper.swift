@@ -5,6 +5,7 @@ import Vision
 
 
 struct CameraViewWrapper: UIViewControllerRepresentable {
+    @ObservedObject var exerciseReps: ExerciseRepModel
     var poseEstimator: PoseEstimator
     
     func makeUIViewController(context: Context) -> some UIViewController {

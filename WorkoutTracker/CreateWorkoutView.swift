@@ -9,15 +9,15 @@ import SwiftUI
 
 struct CreateWorkoutView: View {
     @Binding var selections: [String]
-    @StateObject var exerciseReps = ExerciseRepModel()
-    @Binding var rootIsActive : Bool
+    @Binding var rootIsActive: Bool
+    @ObservedObject var exerciseReps: ExerciseRepModel
     
     var body: some View {
         VStack() {
             ForEach(selections, id: \.self) { exercise in
                 ExerciseRepCell(exercise: exercise, exerciseRepModel: exerciseReps)
             }
-            NavigationLink(destination: CameraView(shouldPopToRootView: self.$rootIsActive), label: { Text("Confirm")
+            NavigationLink(destination: CameraView(shouldPopToRootView: self.$rootIsActive, exerciseReps: exerciseReps, selections: $selections), label: { Text("Confirm")
                     .bold()
                     .frame(width: 280, height: 50)
                     .foregroundColor(.white)
@@ -56,6 +56,6 @@ struct CreateWorkoutPreviewWrapper: View {
     @State(initialValue: true) var isActive: Bool
     
     var body: some View {
-        CreateWorkoutView(selections: $selections, exerciseReps: ExerciseRepModel(), rootIsActive: $isActive)
+        CreateWorkoutView(selections: $selections, rootIsActive: $isActive, exerciseReps: ExerciseRepModel())
     }
 }

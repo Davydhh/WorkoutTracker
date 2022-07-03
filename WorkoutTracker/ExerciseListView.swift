@@ -12,6 +12,7 @@ var exercises = Model.init().exercises
 struct ExerciseListView: View {
     @Binding var selections: [String]
     @State private var isEditable = false
+    @ObservedObject var exerciseReps: ExerciseRepModel
     
     var body: some View {
         List {
@@ -19,9 +20,9 @@ struct ExerciseListView: View {
                 ExerciseRow(name: exercise, isSelected: self.selections.contains(exercise)) {
                     if self.selections.contains(exercise) {
                         self.selections.removeAll(where: { $0 == exercise })
-                    }
-                    else {
+                    } else {
                         self.selections.append(exercise)
+                        exerciseReps.exercisesReps[exercise] = 1
                     }
                 }
             }
@@ -52,6 +53,6 @@ struct PreviewWrapper: View {
     @State(initialValue: [String]()) var selections: [String]
     
     var body: some View {
-        ExerciseListView(selections: $selections)
+        ExerciseListView(selections: $selections, exerciseReps: ExerciseRepModel())
     }
 }
