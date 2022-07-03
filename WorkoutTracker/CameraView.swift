@@ -24,7 +24,7 @@ struct CameraView: View {
                                 .font(.system(size: 30.0))
                         } else {
                             Image(systemName: "person")
-                                .font(.system(size: 56.0))
+                                .font(.system(size: 30.0))
                         }
                     }.padding()
                     if showStick {
