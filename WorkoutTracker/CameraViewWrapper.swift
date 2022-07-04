@@ -10,9 +10,10 @@ struct CameraViewWrapper: UIViewControllerRepresentable {
     var poseEstimator: PoseEstimator
     @Binding var repCounter: Int
     @Binding var repGoal: Int
+    @Binding var index: Int
     
     func makeUIViewController(context: Context) -> some UIViewController {
-        let cvc = CameraViewController(currentExercise: $currentExercise, repCounter: $repCounter, repGoal: $repGoal)
+        let cvc = CameraViewController(currentExercise: $currentExercise, repCounter: $repCounter, repGoal: $repGoal, exerciseIndex: $index)
         cvc.delegate = poseEstimator
         cvc.poseEstimator = poseEstimator
         cvc.exerciseReps = exerciseReps

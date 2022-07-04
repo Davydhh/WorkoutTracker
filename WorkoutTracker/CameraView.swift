@@ -16,6 +16,7 @@ struct CameraView: View {
     @State var currentExercise: String
     @State var repGoal: Int
     @State var repCounter: Int = 0
+    @State var index = 0
     
     init(shouldPopToRootView: Binding<Bool>, exerciseReps: ExerciseRepModel, selections: Binding<[String]>) {
         self._shouldPopToRootView = shouldPopToRootView
@@ -43,7 +44,7 @@ struct CameraView: View {
             }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal)
+                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index)
                     HStack {
                         Button(action: { showStick = !showStick }) {
                             if showStick {
@@ -68,15 +69,31 @@ struct CameraView: View {
                 }
             }
             Button(action: {
-                self.shouldPopToRootView = false
-                selections.removeAll()
+                if (index == selections.count - 1) {
+                    self.shouldPopToRootView = false
+                    selections.removeAll()
+                } else {
+                    index += 1
+                    currentExercise = selections[index]
+                    repGoal = exerciseReps.exercisesReps[currentExercise]!
+                    repCounter = 0
+                }
             }) {
-                Text("Finish")
-                    .bold()
-                    .frame(width: 280, height: 50)
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                if (index == selections.count - 1) {
+                    Text("Finish")
+                        .bold()
+                        .frame(width: 280, height: 50)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                } else {
+                    Text("Next")
+                        .bold()
+                        .frame(width: 280, height: 50)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
             }.padding()
         }
     }

@@ -39,14 +39,15 @@ class CameraViewController: UIViewController {
         }
     }
     
-    var exerciseIndex = 0
+    @Binding var exerciseIndex: Int
     
     var exerciseDetected = false
     
-    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>) {
+    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>) {
         self._currentExercise = currentExercise
         self._repCounter = repCounter
         self._repGoal = repGoal
+        self._exerciseIndex = exerciseIndex
         super.init(nibName: nil, bundle: nil)
     }
     
