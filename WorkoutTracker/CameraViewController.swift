@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import AVFoundation
 import AudioToolbox
 
@@ -19,27 +20,39 @@ class CameraViewController: UIViewController {
     
     var selections: [String]?
     var exerciseReps: ExerciseRepModel?
-    var currentExercise: String? {
+    
+    @Binding var currentExercise: String {
         didSet {
-            print("Current exercise: \(currentExercise!)")
+            print("Current exercise: \(currentExercise)")
         }
     }
     
-    var repCounter: Int? {
+    @Binding var repCounter: Int {
         didSet {
-            print("Rep counter: \(repCounter!)")
+            print("Rep counter: \(repCounter)")
         }
     }
     
-    var repGoal: Int? {
+    @Binding var repGoal: Int {
         didSet {
-            print("Rep goal: \(repGoal!)")
+            print("Rep goal: \(repGoal)")
         }
     }
     
     var exerciseIndex = 0
     
     var exerciseDetected = false
+    
+    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>) {
+        self._currentExercise = currentExercise
+        self._repCounter = repCounter
+        self._repGoal = repGoal
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let cameraQueue = DispatchQueue(
         label: "CameraOutput",
@@ -107,20 +120,20 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: PredictorDelegate {
     func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double) {
-        if action == currentExercise!.lowercased() && confidence > 0.90 && exerciseDetected == false {
+        if action == currentExercise.lowercased() && confidence > 0.90 && exerciseDetected == false {
             exerciseDetected = true
-            self.repCounter! += 1
+            self.repCounter += 1
             
             DispatchQueue.main.async {
                 AudioServicesPlayAlertSound(SystemSoundID(1322))
             }
             
-            if (repCounter! == repGoal!) {
-                print("Ripetizioni di \(self.currentExercise!) completate")
-                if (self.exerciseIndex < self.selections!.count) {
+            if (repCounter == repGoal) {
+                print("Ripetizioni di \(self.currentExercise) completate")
+                if (self.exerciseIndex < (self.selections!.count - 1)) {
                     self.exerciseIndex += 1
                     self.currentExercise = self.selections![self.exerciseIndex]
-                    self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
+                    self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise]!
                     self.repCounter = 0
                 } else {
                     print("Allenamento completato")
