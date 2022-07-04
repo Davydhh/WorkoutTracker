@@ -72,6 +72,7 @@ struct CameraView: View {
                 if (index == selections.count - 1) {
                     self.shouldPopToRootView = false
                     selections.removeAll()
+                    exerciseReps.exercisesReps.removeAll()
                 } else {
                     index += 1
                     currentExercise = selections[index]
