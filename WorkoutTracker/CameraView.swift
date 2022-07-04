@@ -43,7 +43,7 @@ struct CameraView: View {
             }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator)
+                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal)
                     HStack {
                         Button(action: { showStick = !showStick }) {
                             if showStick {

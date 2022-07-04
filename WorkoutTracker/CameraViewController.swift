@@ -19,10 +19,25 @@ class CameraViewController: UIViewController {
     
     var selections: [String]?
     var exerciseReps: ExerciseRepModel?
-    var currentExercise: String?
-    var repCounter = 0
-    var repGoal = 0
-    var exerciseIndex = 1
+    var currentExercise: String? {
+        didSet {
+            print("Current exercise: \(currentExercise!)")
+        }
+    }
+    
+    var repCounter: Int? {
+        didSet {
+            print("Rep counter: \(repCounter!)")
+        }
+    }
+    
+    var repGoal: Int? {
+        didSet {
+            print("Rep goal: \(repGoal!)")
+        }
+    }
+    
+    var exerciseIndex = 0
     
     var exerciseDetected = false
     
@@ -51,7 +66,6 @@ class CameraViewController: UIViewController {
         }
         
         self.poseEstimator?.delegate = self
-        self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,16 +107,15 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: PredictorDelegate {
     func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double) {
-        print(action, confidence)
         if action == currentExercise!.lowercased() && confidence > 0.90 && exerciseDetected == false {
             exerciseDetected = true
-            repCounter += 1
+            self.repCounter! += 1
             
             DispatchQueue.main.async {
                 AudioServicesPlayAlertSound(SystemSoundID(1322))
             }
             
-            if (repCounter == repGoal) {
+            if (repCounter! == repGoal!) {
                 print("Ripetizioni di \(self.currentExercise!) completate")
                 if (self.exerciseIndex < self.selections!.count) {
                     self.exerciseIndex += 1
