@@ -130,14 +130,14 @@ extension CameraViewController: PredictorDelegate {
             }
             
             if (repCounter == repGoal) {
-                print("Ripetizioni di \(self.currentExercise) completate")
+                print("\(self.currentExercise) reps completed")
                 if (self.exerciseIndex < (self.selections!.count - 1)) {
                     self.exerciseIndex += 1
                     self.currentExercise = self.selections![self.exerciseIndex]
                     self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise]!
                     self.repCounter = 0
                 } else {
-                    print("Allenamento completato")
+                    print("Workout completed")
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
