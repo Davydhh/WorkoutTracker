@@ -16,8 +16,14 @@ struct CameraView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             if (!selections.isEmpty) {
                 Text(selections.first!)
+                    .font(
+                        .largeTitle
+                        .weight(.bold)
+                    )
+                    .foregroundColor(.blue)
             }
             ZStack {
                 GeometryReader { geo in

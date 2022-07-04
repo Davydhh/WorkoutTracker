@@ -26,21 +26,9 @@ struct ExerciseListView: View {
                     }
                 }
             }
-            .onMove(perform: move)
-            .onLongPressGesture {
-                withAnimation {
-                    self.isEditable = true
-                }
-            }
         }
     }
-    
-    func move(from source: IndexSet, to destination: Int) {
-        exercises.move(fromOffsets: source, toOffset: destination)
-        withAnimation {
-            isEditable = false
-        }
-    }
+
 }
 
 struct ExerciseListView_Previews: PreviewProvider {
