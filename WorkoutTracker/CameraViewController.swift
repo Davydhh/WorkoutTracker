@@ -51,9 +51,7 @@ class CameraViewController: UIViewController {
         }
         
         self.poseEstimator?.delegate = self
-//        self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
-        print("---------------------------")
-        print(self.currentExercise!)
+        self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
     }
     
     override func viewWillAppear(_ animated: Bool) {

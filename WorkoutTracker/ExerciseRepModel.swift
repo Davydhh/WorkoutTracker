@@ -12,6 +12,10 @@ class ExerciseRepModel: ObservableObject {
     
     init() {
         exercisesReps = [:]
+        
+        for exercise in Model().exercises {
+            exercisesReps[exercise] = 0
+        }
     }
     
     func incrementReps(name: String) {

@@ -14,13 +14,17 @@ struct CameraView: View {
     @Binding var selections: [String]
     @State var showStick = true
     @State var currentExercise: String
+    @State var repGoal: Int
+    @State var repCounter: Int = 0
     
     init(shouldPopToRootView: Binding<Bool>, exerciseReps: ExerciseRepModel, selections: Binding<[String]>) {
         self._shouldPopToRootView = shouldPopToRootView
         self.exerciseReps = exerciseReps
         self._selections = selections
-        let currentEx = selections.first?.wrappedValue ?? ""
-        self._currentExercise = State(initialValue: currentEx)
+        let currentExercise = selections.first?.wrappedValue ?? ""
+        self._currentExercise = State(initialValue: currentExercise)
+        let repGoal = exerciseReps.exercisesReps[currentExercise] ?? 0
+        self._repGoal = State(initialValue: repGoal)
     }
     
     var body: some View {
@@ -33,22 +37,31 @@ struct CameraView: View {
                     }
                     .font(
                         .largeTitle
-                        .weight(.bold)
+                            .weight(.bold)
                     )
                     .foregroundColor(.blue)
             }
             ZStack {
                 GeometryReader { geo in
                     CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator)
-                    Button(action: { showStick = !showStick }) {
-                        if showStick {
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 30.0))
-                        } else {
-                            Image(systemName: "person")
-                                .font(.system(size: 30.0))
+                    HStack {
+                        Button(action: { showStick = !showStick }) {
+                            if showStick {
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 30.0))
+                            } else {
+                                Image(systemName: "person")
+                                    .font(.system(size: 30.0))
+                            }
                         }
-                    }.padding()
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("\(repCounter)/\(repGoal)")
+                            .padding()
+                            .font(.system(size: 30, weight: .heavy, design: .default))
+                            .foregroundColor(.blue)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
                     if showStick {
                         StickFigureView(poseEstimator: poseEstimator, size: geo.size)
                     }
@@ -79,8 +92,9 @@ struct CameraView_Previews: PreviewProvider {
 struct CameraViewWrapperPreview: View {
     @State(initialValue: true) var isActive
     @State(initialValue: ["Pull Up"]) var selections
+    @StateObject var exerciseReps = ExerciseRepModel()
     
     var body: some View {
-        CameraView(shouldPopToRootView: $isActive, exerciseReps: ExerciseRepModel(), selections: $selections)
+        CameraView(shouldPopToRootView: $isActive, exerciseReps: exerciseReps, selections: $selections)
     }
 }
