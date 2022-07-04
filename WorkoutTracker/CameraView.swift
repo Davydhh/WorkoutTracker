@@ -13,12 +13,24 @@ struct CameraView: View {
     @ObservedObject var exerciseReps: ExerciseRepModel
     @Binding var selections: [String]
     @State var showStick = true
+    @State var currentExercise: String
+    
+    init(shouldPopToRootView: Binding<Bool>, exerciseReps: ExerciseRepModel, selections: Binding<[String]>) {
+        self._shouldPopToRootView = shouldPopToRootView
+        self.exerciseReps = exerciseReps
+        self._selections = selections
+        let currentEx = selections.first?.wrappedValue ?? ""
+        self._currentExercise = State(initialValue: currentEx)
+    }
     
     var body: some View {
         VStack {
             Spacer()
             if (!selections.isEmpty) {
-                Text(selections.first!)
+                Text(currentExercise)
+                    .onAppear {
+                        self.currentExercise = selections.first!
+                    }
                     .font(
                         .largeTitle
                         .weight(.bold)
@@ -27,7 +39,7 @@ struct CameraView: View {
             }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, poseEstimator: poseEstimator)
+                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator)
                     Button(action: { showStick = !showStick }) {
                         if showStick {
                             Image(systemName: "person.fill")

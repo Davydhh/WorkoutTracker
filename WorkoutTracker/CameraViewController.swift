@@ -19,8 +19,12 @@ class CameraViewController: UIViewController {
     
     var selections: [String]?
     var exerciseReps: ExerciseRepModel?
+    var currentExercise: String?
+    var repCounter = 0
+    var repGoal = 0
+    var exerciseIndex = 1
     
-    var isPullUpDetected = false
+    var exerciseDetected = false
     
     private let cameraQueue = DispatchQueue(
         label: "CameraOutput",
@@ -47,6 +51,9 @@ class CameraViewController: UIViewController {
         }
         
         self.poseEstimator?.delegate = self
+//        self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
+        print("---------------------------")
+        print(self.currentExercise!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,15 +96,28 @@ class CameraViewController: UIViewController {
 extension CameraViewController: PredictorDelegate {
     func predictor(_ predictor: PoseEstimator, didLabelAction action: String, with confidence: Double) {
         print(action, confidence)
-        if action == "pull up" && confidence > 0.95 && isPullUpDetected == false {
-            isPullUpDetected = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.isPullUpDetected = false
-            }
+        if action == currentExercise!.lowercased() && confidence > 0.90 && exerciseDetected == false {
+            exerciseDetected = true
+            repCounter += 1
             
             DispatchQueue.main.async {
                 AudioServicesPlayAlertSound(SystemSoundID(1322))
+            }
+            
+            if (repCounter == repGoal) {
+                print("Ripetizioni di \(self.currentExercise!) completate")
+                if (self.exerciseIndex < self.selections!.count) {
+                    self.exerciseIndex += 1
+                    self.currentExercise = self.selections![self.exerciseIndex]
+                    self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise!]!
+                    self.repCounter = 0
+                } else {
+                    print("Allenamento completato")
+                }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.exerciseDetected = false
+                }
             }
         }
     }
