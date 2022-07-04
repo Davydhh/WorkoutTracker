@@ -27,7 +27,7 @@ struct CameraView: View {
             }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, poseEstimator: poseEstimator)
+                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, poseEstimator: poseEstimator)
                     Button(action: { showStick = !showStick }) {
                         if showStick {
                             Image(systemName: "person.fill")

@@ -20,9 +20,10 @@ struct ExerciseListView: View {
                 ExerciseRow(name: exercise, isSelected: self.selections.contains(exercise)) {
                     if self.selections.contains(exercise) {
                         self.selections.removeAll(where: { $0 == exercise })
+                        self.exerciseReps.exercisesReps.removeValue(forKey: exercise)
                     } else {
                         self.selections.append(exercise)
-                        exerciseReps.exercisesReps[exercise] = 1
+                        self.exerciseReps.exercisesReps[exercise] = 1
                     }
                 }
             }

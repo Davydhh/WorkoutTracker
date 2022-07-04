@@ -17,6 +17,9 @@ class CameraViewController: UIViewController {
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     var poseEstimator: PoseEstimator?
     
+    var selections: [String]?
+    var exerciseReps: ExerciseRepModel?
+    
     var isPullUpDetected = false
     
     private let cameraQueue = DispatchQueue(
@@ -88,11 +91,11 @@ extension CameraViewController: PredictorDelegate {
         print(action, confidence)
         if action == "pull up" && confidence > 0.95 && isPullUpDetected == false {
             isPullUpDetected = true
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.isPullUpDetected = false
             }
-
+            
             DispatchQueue.main.async {
                 AudioServicesPlayAlertSound(SystemSoundID(1322))
             }
@@ -102,19 +105,19 @@ extension CameraViewController: PredictorDelegate {
 
 extension AVCaptureDevice {
     func set(frameRate: Double) {
-    guard let range = activeFormat.videoSupportedFrameRateRanges.first,
-        range.minFrameRate...range.maxFrameRate ~= frameRate
+        guard let range = activeFormat.videoSupportedFrameRateRanges.first,
+              range.minFrameRate...range.maxFrameRate ~= frameRate
         else {
             print("Requested FPS is not supported by the device's activeFormat !")
             return
+        }
+        
+        do { try lockForConfiguration()
+            activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
+            activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
+            unlockForConfiguration()
+        } catch {
+            print("LockForConfiguration failed with error: \(error.localizedDescription)")
+        }
     }
-
-    do { try lockForConfiguration()
-        activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
-        activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate))
-        unlockForConfiguration()
-    } catch {
-        print("LockForConfiguration failed with error: \(error.localizedDescription)")
-    }
-  }
 }
