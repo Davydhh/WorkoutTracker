@@ -19,7 +19,7 @@ class CameraViewController: UIViewController {
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     var poseEstimator: PoseEstimator?
     
-    var selections: [String]?
+    @Binding var selections: [String]
     var exerciseReps: ExerciseRepModel?
     
     @Binding var currentExercise: String {
@@ -42,14 +42,19 @@ class CameraViewController: UIViewController {
     }
     
     @Binding var exerciseIndex: Int
+    @Binding var shouldPopToRootView: Bool
     
     var exerciseDetected = false
     
-    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>) {
+    var terminated = false
+    
+    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>) {
         self._currentExercise = currentExercise
         self._repCounter = repCounter
         self._repGoal = repGoal
         self._exerciseIndex = exerciseIndex
+        self._shouldPopToRootView = shouldPopToRootView
+        self._selections = selections
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -128,9 +133,10 @@ class CameraViewController: UIViewController {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
 
-            audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
+            self.audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
+            self.audioSession?.delegate = self
 
-            guard let audioSession = audioSession else { return }
+            guard let audioSession = self.audioSession else { return }
 
             audioSession.play()
 
@@ -152,14 +158,15 @@ extension CameraViewController: PredictorDelegate {
             
             if (repCounter == repGoal) {
                 print("\(self.currentExercise) reps completed")
-                if (self.exerciseIndex < (self.selections!.count - 1)) {
+                if (self.exerciseIndex < (self.selections.count - 1)) {
                     self.exerciseIndex += 1
-                    self.currentExercise = self.selections![self.exerciseIndex]
+                    self.currentExercise = self.selections[self.exerciseIndex]
                     self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise]!
                     self.repCounter = 0
                     self.exerciseDetected = false
                 } else {
                     print("Workout completed")
+                    terminated = true
                     playSound("Terminated")
                 }
             } else {
@@ -167,6 +174,16 @@ extension CameraViewController: PredictorDelegate {
                     self.exerciseDetected = false
                 }
             }
+        }
+    }
+}
+
+extension CameraViewController: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if (self.terminated && flag) {
+            self.selections.removeAll()
+            self.exerciseReps!.reset()
+            self.shouldPopToRootView = false
         }
     }
 }

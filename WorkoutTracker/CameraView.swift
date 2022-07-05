@@ -47,7 +47,8 @@ struct CameraView: View {
             }
             ZStack {
                 GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index)
+                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView
+                    )
                     HStack {
                         Button(action: { showStick = !showStick }) {
                             if showStick {
@@ -74,7 +75,7 @@ struct CameraView: View {
             Button(action: {
                 if (index == selections.count - 1) {
                     selections.removeAll()
-                    exerciseReps.exercisesReps.removeAll()
+                    exerciseReps.reset()
                     playSound("Terminated")
                     self.shouldPopToRootView = false
                 } else {

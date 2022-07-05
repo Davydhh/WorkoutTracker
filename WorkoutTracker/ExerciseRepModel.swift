@@ -18,6 +18,12 @@ class ExerciseRepModel: ObservableObject {
         }
     }
     
+    func reset() {
+        for exercise in exercisesReps.keys {
+            exercisesReps[exercise] = 0
+        }
+    }
+    
     func incrementReps(name: String) {
         exercisesReps[name] = exercisesReps[name]! + 1
     }
