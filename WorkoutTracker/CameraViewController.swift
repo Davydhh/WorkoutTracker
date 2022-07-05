@@ -16,6 +16,7 @@ final class CameraViewClass: UIView {
 class CameraViewController: UIViewController {
     var cameraSession: AVCaptureSession?
     var audioSession: AVAudioPlayer?
+    var videoDevice: AVCaptureDevice?
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     var poseEstimator: PoseEstimator?
     
@@ -45,8 +46,8 @@ class CameraViewController: UIViewController {
     @Binding var shouldPopToRootView: Bool
     
     var exerciseDetected = false
-    
     var terminated = false
+    var usingFrontCamera = false
     
     init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>) {
         self._currentExercise = currentExercise
@@ -72,6 +73,13 @@ class CameraViewController: UIViewController {
     }
     
     private var cameraView: CameraViewClass { view as! CameraViewClass }
+    
+    override func viewDidLoad() {
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.handleTap(_:)))
+            tapGR.delegate = self
+            tapGR.numberOfTapsRequired = 2
+            view.addGestureRecognizer(tapGR)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -101,15 +109,38 @@ class CameraViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    func getFrontCamera() -> AVCaptureDevice? {
+        return AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
+    }
+    
+    func getBackCamera() -> AVCaptureDevice? {
+        return AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
+    }
+    
+    func changeCamera() {
+        usingFrontCamera = !usingFrontCamera
+        
+        do{
+            cameraSession!.removeInput(cameraSession!.inputs.first!)
+            
+            if (usingFrontCamera) {
+                videoDevice = getFrontCamera()
+            }else{
+                videoDevice = getBackCamera()
+            }
+            let captureDeviceInput1 = try AVCaptureDeviceInput(device: videoDevice!)
+            cameraSession!.addInput(captureDeviceInput1)
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
     func prepareAVSession() throws {
         let session = AVCaptureSession()
         session.beginConfiguration()
         session.sessionPreset = AVCaptureSession.Preset.high
-        guard let videoDevice = AVCaptureDevice.default(
-            .builtInWideAngleCamera,
-            for: .video,
-            position: .back)
-        else { return }
+        guard let videoDevice = usingFrontCamera ? getFrontCamera() : getBackCamera() else { return }
+        self.videoDevice = videoDevice
         videoDevice.set(frameRate: 30)
         guard let deviceInput = try? AVCaptureDeviceInput(device: videoDevice)
         else { return }
@@ -128,18 +159,18 @@ class CameraViewController: UIViewController {
     
     func playSound(_ exercise: String) {
         guard let url = Bundle.main.url(forResource: exercise, withExtension: "m4a") else { return }
-
+        
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
-
+            
             self.audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
             self.audioSession?.delegate = self
-
+            
             guard let audioSession = self.audioSession else { return }
-
+            
             audioSession.play()
-
+            
         } catch let error {
             print(error.localizedDescription)
         }
@@ -185,6 +216,12 @@ extension CameraViewController: AVAudioPlayerDelegate {
             self.exerciseReps!.reset()
             self.shouldPopToRootView = false
         }
+    }
+}
+
+extension CameraViewController: UIGestureRecognizerDelegate {
+    @objc func handleTap(_ gesture: UITapGestureRecognizer){
+        self.changeCamera()
     }
 }
 
