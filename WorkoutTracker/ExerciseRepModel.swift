@@ -8,7 +8,18 @@
 import Foundation
 
 class ExerciseRepModel: ObservableObject {
-    @Published var exercisesReps: [String: Int]
+    @Published var exercisesReps: [String: Int] {
+        didSet {
+            for (key, value) in exercisesReps {
+                var s = String(value)
+                
+                if s.count > 3 {
+                    s = String(s.prefix(3))
+                    exercisesReps[key] = Int(s) ?? 1
+                }
+            }
+        }
+    }
     
     init() {
         exercisesReps = [:]
