@@ -14,7 +14,8 @@ final class CameraViewClass: UIView {
 }
 
 class CameraViewController: UIViewController {
-    private var cameraSession: AVCaptureSession?
+    var cameraSession: AVCaptureSession?
+    var audioSession: AVAudioPlayer?
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     var poseEstimator: PoseEstimator?
     
@@ -24,6 +25,7 @@ class CameraViewController: UIViewController {
     @Binding var currentExercise: String {
         didSet {
             print("Current exercise: \(currentExercise)")
+            playSound(currentExercise)
         }
     }
     
@@ -80,6 +82,7 @@ class CameraViewController: UIViewController {
         }
         
         self.poseEstimator?.delegate = self
+        playSound(self.currentExercise)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,6 +120,24 @@ class CameraViewController: UIViewController {
         session.commitConfiguration()
         cameraSession = session
     }
+    
+    func playSound(_ exercise: String) {
+        guard let url = Bundle.main.url(forResource: exercise, withExtension: "m4a") else { return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
+
+            guard let audioSession = audioSession else { return }
+
+            audioSession.play()
+
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 extension CameraViewController: PredictorDelegate {
@@ -136,8 +157,10 @@ extension CameraViewController: PredictorDelegate {
                     self.currentExercise = self.selections![self.exerciseIndex]
                     self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise]!
                     self.repCounter = 0
+                    self.exerciseDetected = false
                 } else {
                     print("Workout completed")
+                    playSound("Terminated")
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

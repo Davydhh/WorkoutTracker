@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import AVFoundation
+
+var audioSession: AVAudioPlayer?
 
 struct CameraView: View {
     @StateObject var poseEstimator = PoseEstimator()
@@ -70,14 +73,16 @@ struct CameraView: View {
             }
             Button(action: {
                 if (index == selections.count - 1) {
-                    self.shouldPopToRootView = false
                     selections.removeAll()
                     exerciseReps.exercisesReps.removeAll()
+                    playSound("Terminated")
+                    self.shouldPopToRootView = false
                 } else {
                     index += 1
                     currentExercise = selections[index]
                     repGoal = exerciseReps.exercisesReps[currentExercise]!
                     repCounter = 0
+                    playSound(currentExercise)
                 }
             }) {
                 if (index == selections.count - 1) {
@@ -96,6 +101,24 @@ struct CameraView: View {
                         .cornerRadius(10)
                 }
             }.padding()
+        }
+    }
+    
+    func playSound(_ exercise: String) {
+        guard let url = Bundle.main.url(forResource: exercise, withExtension: "m4a") else { return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
+
+            guard let audioSession = audioSession else { return }
+
+            audioSession.play()
+
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 }
