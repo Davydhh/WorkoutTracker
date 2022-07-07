@@ -52,7 +52,7 @@ struct ExerciseRepCell: View {
                                                         
                             guard newValue == "-1" else {
                                 if newValue.count > 3 {
-                                    exerciseRepModel.exercisesReps[exercise] = Int(String(newValue.prefix(3)))
+                                    exerciseRepModel.exercisesReps[exercise] = Int(String(newValue.prefix(3))) ?? 1
                                 }
                                 return
                             }
