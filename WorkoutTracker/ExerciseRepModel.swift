@@ -8,18 +8,7 @@
 import Foundation
 
 class ExerciseRepModel: ObservableObject {
-    @Published var exercisesReps: [String: Int] {
-        didSet {
-            for (key, value) in exercisesReps {
-                var s = String(value)
-                
-                if s.count > 3 {
-                    s = String(s.prefix(3))
-                    exercisesReps[key] = Int(s) ?? 1
-                }
-            }
-        }
-    }
+    @Published var exercisesReps: [String: Int] 
     
     init() {
         exercisesReps = [:]
@@ -36,10 +25,20 @@ class ExerciseRepModel: ObservableObject {
     }
     
     func incrementReps(name: String) {
+        guard exercisesReps[name] != nil else {
+            exercisesReps[name] = 1
+            return
+        }
+        
         exercisesReps[name] = exercisesReps[name]! + 1
     }
     
     func decrementReps(name: String) {
+        guard exercisesReps[name] != nil else {
+            exercisesReps[name] = 1
+            return
+        }
+        
         exercisesReps[name] = exercisesReps[name]! - 1
     }
 }

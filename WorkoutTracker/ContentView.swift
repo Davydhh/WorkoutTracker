@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Choose your workout exercises and their order")
+                Text("Choose your workout exercises")
                     .navigationTitle("Exercises")
                 ExerciseListView(selections: $selections, exerciseReps: exerciseReps)
                 if (!selections.isEmpty) {

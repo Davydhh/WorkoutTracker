@@ -29,7 +29,6 @@ struct ExerciseListView: View {
             }
         }
     }
-
 }
 
 struct ExerciseListView_Previews: PreviewProvider {
