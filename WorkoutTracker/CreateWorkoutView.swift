@@ -34,20 +34,6 @@ struct CreateWorkoutView: View {
     }
 }
 
-
-struct CameraController: UIViewControllerRepresentable {
-    typealias UIViewControllerType = CameraViewController
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<CameraController>) -> CameraController.UIViewControllerType {
-        let sb = UIStoryboard(name: "CameraController", bundle: nil)
-        let viewController = sb.instantiateViewController(identifier: "Camera") as! CameraViewController
-        return viewController
-    }
-    
-    func updateUIViewController(_ uiViewController: CameraController.UIViewControllerType, context: UIViewControllerRepresentableContext<CameraController>) {
-    }
-}
-
 struct CreateWorkoutView_Previews: PreviewProvider {
     static var previews: some View {
         CreateWorkoutPreviewWrapper()
