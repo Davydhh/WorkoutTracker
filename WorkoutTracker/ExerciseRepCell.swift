@@ -45,13 +45,25 @@ struct ExerciseRepCell: View {
                         }
                         .buttonStyle(RepsButton())
                     }
-                    TextField("Reps", value: $exerciseRepModel.exercisesReps[exercise], formatter: NumberFormatter())
+                    TextField("reps", value: $exerciseRepModel.exercisesReps[exercise], formatter: NumberFormatter())
                         .focused($isFocused)
                         .keyboardType(.numberPad)
+                        .onReceive(Just(String(exerciseRepModel.exercisesReps[exercise] ?? -1))) { newValue in
+                                                        
+                            guard newValue == "-1" else {
+                                if newValue.count > 3 {
+                                    exerciseRepModel.exercisesReps[exercise] = Int(String(newValue.prefix(3)))
+                                }
+                                return
+                            }
+                            
+                            exerciseRepModel.exercisesReps[exercise] = 1
+                        }
+                        .frame(maxWidth: 100)
                         .foregroundColor(.white)
                         .font(.title)
                         .multilineTextAlignment(.center)
-                        .fixedSize()
+                        .fixedSize(horizontal: true, vertical: true)
                     if (!isFocused) {
                         Button(action: {
                             guard let reps = exerciseRepModel.exercisesReps[exercise] else { return }
@@ -80,7 +92,7 @@ struct ExerciseRepCell: View {
                     isFocused = false
                     
                     let reps = exerciseRepModel.exercisesReps[exercise] ?? 1
-                                        
+                    
                     guard reps > 999 else {
                         exerciseRepModel.exercisesReps[exercise] = reps
                         return
@@ -88,6 +100,7 @@ struct ExerciseRepCell: View {
                     
                     exerciseRepModel.exercisesReps[exercise] = 999
                 }
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .padding()
