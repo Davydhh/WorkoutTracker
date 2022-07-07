@@ -78,6 +78,15 @@ struct ExerciseRepCell: View {
             if (isFocused) {
                 Button("Done") {
                     isFocused = false
+                    
+                    let reps = exerciseRepModel.exercisesReps[exercise] ?? 1
+                                        
+                    guard reps > 999 else {
+                        exerciseRepModel.exercisesReps[exercise] = reps
+                        return
+                    }
+                    
+                    exerciseRepModel.exercisesReps[exercise] = 999
                 }
             }
         }
