@@ -13,22 +13,28 @@ struct SummaryView: View {
     @Binding var selections: [String]
     
     var body: some View {
-        ForEach(selections, id: \.self) { exercise in
-            Text("\(exercise): \(exerciseReps.exercisesReps[exercise]!)")
+        VStack {
+            List {
+                ForEach(selections, id: \.self) { exercise in
+                    Text("\(exercise): \(exerciseReps.exercisesReps[exercise]!)")
+                        .listRowSeparator(.hidden)
+                }
+            }.listStyle(.plain)
+            Button(action: {
+                selections.removeAll()
+                exerciseReps.reset()
+                self.shouldPopToRootView = false
+            }) {
+                Text("Start")
+                    .bold()
+                    .frame(width: 280, height: 50)
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                
+            }.padding()
         }
-        Button(action: {
-            selections.removeAll()
-            exerciseReps.reset()
-            self.shouldPopToRootView = false
-        }) {
-            Text("Start")
-                .bold()
-                .frame(width: 280, height: 50)
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .cornerRadius(10)
-            
-        }.padding()
+        .navigationBarHidden(true)
     }
 }
 
