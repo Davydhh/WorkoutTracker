@@ -25,9 +25,7 @@ class CameraViewController: UIViewController {
     var usingFrontCamera = false
     var exerciseReps: ExerciseRepModel?
     
-    @Binding var isTimerRunning: Bool
     @Binding var startTime: Date
-    @Binding var timer: Publishers.Autoconnect<Timer.TimerPublisher>
     @Binding var exerciseSummary: [String: ExerciseSummaryModel]
     
     @Binding var exerciseIndex: Int
@@ -54,16 +52,14 @@ class CameraViewController: UIViewController {
         }
     }
     
-    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>, isTimeRunning: Binding<Bool>, startTime: Binding<Date>, timer: Binding<Publishers.Autoconnect<Timer.TimerPublisher>>, exerciseSummary: Binding<[String: ExerciseSummaryModel]>) {
+    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>, startTime: Binding<Date>, exerciseSummary: Binding<[String: ExerciseSummaryModel]>) {
         self._currentExercise = currentExercise
         self._repCounter = repCounter
         self._repGoal = repGoal
         self._exerciseIndex = exerciseIndex
         self._shouldPopToRootView = shouldPopToRootView
         self._selections = selections
-        self._isTimerRunning = isTimeRunning
         self._startTime = startTime
-        self._timer = timer
         self._exerciseSummary = exerciseSummary
         super.init(nibName: nil, bundle: nil)
     }

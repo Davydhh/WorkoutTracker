@@ -20,9 +20,7 @@ struct CameraView: View {
     @State var repGoal: Int
     @State var repCounter: Int = 0
     @State var index = 0
-    @State var isTimerRunning = false
     @State var startTime =  Date()
-    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State var exerciseSummary = [String: ExerciseSummaryModel]()
     @State var hasFinished = false
     
@@ -53,7 +51,7 @@ struct CameraView: View {
                 }
                 ZStack {
                     GeometryReader { geo in
-                        CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView, isTimerRunning: $isTimerRunning, startTime: $startTime, timer: $timer, exerciseSummary: $exerciseSummary
+                        CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView, startTime: $startTime, exerciseSummary: $exerciseSummary
                         )
                         HStack {
                             Button(action: { showStick = !showStick }) {
