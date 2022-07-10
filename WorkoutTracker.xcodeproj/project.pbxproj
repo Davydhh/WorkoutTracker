@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D90C1E33287B052200F6F468 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90C1E32287B052200F6F468 /* SummaryView.swift */; };
+		D90C1E35287B240D00F6F468 /* ExerciseSummaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90C1E34287B240D00F6F468 /* ExerciseSummaryModel.swift */; };
 		D9153740286BA463003549F1 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D915373F286BA463003549F1 /* CameraViewController.swift */; };
 		D947515928639B69003FC9AB /* ExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515828639B69003FC9AB /* ExerciseListView.swift */; };
 		D947515D2863AA4C003FC9AB /* CreateWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		D90C1E32287B052200F6F468 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		D90C1E34287B240D00F6F468 /* ExerciseSummaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSummaryModel.swift; sourceTree = "<group>"; };
 		D915373F286BA463003549F1 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		D947515828639B69003FC9AB /* ExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListView.swift; sourceTree = "<group>"; };
 		D947515C2863AA4C003FC9AB /* CreateWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutView.swift; sourceTree = "<group>"; };
@@ -111,9 +113,10 @@
 				D98A36D9286CE9F500E30EF3 /* Shape.swift */,
 				D98A36DB286CEA2000E30EF3 /* StickFigureView.swift */,
 				D98A36DD286CEAA600E30EF3 /* CameraView.swift */,
+				D90C1E32287B052200F6F468 /* SummaryView.swift */,
+				D90C1E34287B240D00F6F468 /* ExerciseSummaryModel.swift */,
 				D9C1516A286254E200AF179A /* Assets.xcassets */,
 				D9C1516C286254E200AF179A /* Preview Content */,
-				D90C1E32287B052200F6F468 /* SummaryView.swift */,
 			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D98A36D6286CE97C00E30EF3 /* CameraViewWrapper.swift in Sources */,
+				D90C1E35287B240D00F6F468 /* ExerciseSummaryModel.swift in Sources */,
 				D9153740286BA463003549F1 /* CameraViewController.swift in Sources */,
 				D9C1517728626C8600AF179A /* ExerciseRow.swift in Sources */,
 				D94751612863ACC2003FC9AB /* ExerciseRepCell.swift in Sources */,

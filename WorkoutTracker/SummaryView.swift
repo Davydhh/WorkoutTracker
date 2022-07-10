@@ -11,12 +11,13 @@ struct SummaryView: View {
     @Binding var shouldPopToRootView: Bool
     @ObservedObject var exerciseReps: ExerciseRepModel
     @Binding var selections: [String]
+    @Binding var exerciseSummary: [String: ExerciseSummaryModel]
     
     var body: some View {
         VStack {
             List {
                 ForEach(selections, id: \.self) { exercise in
-                    Text("\(exercise): \(exerciseReps.exercisesReps[exercise]!)")
+                    Text("\(exercise): \(exerciseSummary[exercise]!.reps), \(exerciseSummary[exercise]!.time)")
                         .listRowSeparator(.hidden)
                 }
             }.listStyle(.plain)
@@ -46,9 +47,10 @@ struct SummaryView_Previews: PreviewProvider {
 
 struct SummaryViewPreviewWrapper: View {
     @State(initialValue: true) var isActive: Bool
-    @State(initialValue: ["Push Up"]) var selections: [String]
+    @State(initialValue: ["Pull Up"]) var selections: [String]
+    @State(initialValue: ["Pull Up": ExerciseSummaryModel(reps: 0, time: "0.00")]) var exerciseSummary
     
     var body: some View {
-        SummaryView(shouldPopToRootView: $isActive, exerciseReps: ExerciseRepModel(), selections: $selections)
+        SummaryView(shouldPopToRootView: $isActive, exerciseReps: ExerciseRepModel(), selections: $selections, exerciseSummary: $exerciseSummary)
     }
 }

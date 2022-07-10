@@ -20,6 +20,11 @@ struct CameraView: View {
     @State var repGoal: Int
     @State var repCounter: Int = 0
     @State var index = 0
+    @State var isTimerRunning = false
+    @State var startTime =  Date()
+    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var exerciseSummary = [String: ExerciseSummaryModel]()
+    @State var hasFinished = false
     
     init(shouldPopToRootView: Binding<Bool>, exerciseReps: ExerciseRepModel, selections: Binding<[String]>) {
         self._shouldPopToRootView = shouldPopToRootView
@@ -48,7 +53,7 @@ struct CameraView: View {
                 }
                 ZStack {
                     GeometryReader { geo in
-                        CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView
+                        CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView, isTimerRunning: $isTimerRunning, startTime: $startTime, timer: $timer, exerciseSummary: $exerciseSummary
                         )
                         HStack {
                             Button(action: { showStick = !showStick }) {
@@ -74,17 +79,27 @@ struct CameraView: View {
                     }
                 }
                 if (index == selections.count - 1) {
-                    NavigationLink(destination: SummaryView(shouldPopToRootView: $shouldPopToRootView, exerciseReps: exerciseReps, selections: $selections), label: {
-                        Text("Finish")
-                            .bold()
-                            .frame(width: 280, height: 50)
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    })
-                    .isDetailLink(false)
+                    VStack {
+                        NavigationLink(destination: SummaryView(shouldPopToRootView: $shouldPopToRootView, exerciseReps: exerciseReps, selections: $selections, exerciseSummary: $exerciseSummary), isActive: $hasFinished) {
+                            EmptyView()
+                        }
+                        .isDetailLink(false)
+                        Button(action: {
+                            exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
+                            self.hasFinished = true
+                        }) {
+                            Text("Finish")
+                                .bold()
+                                .frame(width: 280, height: 50)
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }.padding()
+                    }
                 } else {
                     Button(action: {
+                        exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
+                        startTime = Date()
                         index += 1
                         currentExercise = selections[index]
                         repGoal = exerciseReps.exercisesReps[currentExercise]!

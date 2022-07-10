@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import AVFoundation
 import AudioToolbox
+import Combine
 
 final class CameraViewClass: UIView {
     override class var layerClass: AnyClass {
@@ -19,9 +20,20 @@ class CameraViewController: UIViewController {
     var videoDevice: AVCaptureDevice?
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     var poseEstimator: PoseEstimator?
+    var exerciseDetected = false
+    var terminated = false
+    var usingFrontCamera = false
+    var exerciseReps: ExerciseRepModel?
+    
+    @Binding var isTimerRunning: Bool
+    @Binding var startTime: Date
+    @Binding var timer: Publishers.Autoconnect<Timer.TimerPublisher>
+    @Binding var exerciseSummary: [String: ExerciseSummaryModel]
+    
+    @Binding var exerciseIndex: Int
+    @Binding var shouldPopToRootView: Bool
     
     @Binding var selections: [String]
-    var exerciseReps: ExerciseRepModel?
     
     @Binding var currentExercise: String {
         didSet {
@@ -42,20 +54,17 @@ class CameraViewController: UIViewController {
         }
     }
     
-    @Binding var exerciseIndex: Int
-    @Binding var shouldPopToRootView: Bool
-    
-    var exerciseDetected = false
-    var terminated = false
-    var usingFrontCamera = false
-    
-    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>) {
+    init(currentExercise: Binding<String>, repCounter: Binding<Int>, repGoal: Binding<Int>, exerciseIndex: Binding<Int>, shouldPopToRootView: Binding<Bool>, selections: Binding<[String]>, isTimeRunning: Binding<Bool>, startTime: Binding<Date>, timer: Binding<Publishers.Autoconnect<Timer.TimerPublisher>>, exerciseSummary: Binding<[String: ExerciseSummaryModel]>) {
         self._currentExercise = currentExercise
         self._repCounter = repCounter
         self._repGoal = repGoal
         self._exerciseIndex = exerciseIndex
         self._shouldPopToRootView = shouldPopToRootView
         self._selections = selections
+        self._isTimerRunning = isTimeRunning
+        self._startTime = startTime
+        self._timer = timer
+        self._exerciseSummary = exerciseSummary
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -190,6 +199,8 @@ extension CameraViewController: PredictorDelegate {
             if (repCounter == repGoal) {
                 print("\(self.currentExercise) reps completed")
                 if (self.exerciseIndex < (self.selections.count - 1)) {
+                    self.exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
+                    self.startTime = Date()
                     self.exerciseIndex += 1
                     self.currentExercise = self.selections[self.exerciseIndex]
                     self.repGoal = self.exerciseReps!.exercisesReps[self.currentExercise]!
@@ -197,6 +208,7 @@ extension CameraViewController: PredictorDelegate {
                     self.exerciseDetected = false
                 } else {
                     print("Workout completed")
+                    self.exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
                     terminated = true
                     playSound("Terminated")
                 }
@@ -212,7 +224,7 @@ extension CameraViewController: PredictorDelegate {
 extension CameraViewController: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if (self.terminated && flag) {
-            let vc = UIHostingController(rootView: SummaryView(shouldPopToRootView: self.$shouldPopToRootView, exerciseReps: self.exerciseReps!, selections: self.$selections))
+            let vc = UIHostingController(rootView: SummaryView(shouldPopToRootView: self.$shouldPopToRootView, exerciseReps: self.exerciseReps!, selections: self.$selections, exerciseSummary: $exerciseSummary))
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
