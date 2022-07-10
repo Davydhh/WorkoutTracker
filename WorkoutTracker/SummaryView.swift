@@ -16,10 +16,12 @@ struct SummaryView: View {
         VStack {
             List {
                 ForEach(selections, id: \.self) { exercise in
-                    Text("\(exercise): \(exerciseSummary[exercise]!.reps), \(exerciseSummary[exercise]!.time)")
+                    ExerciseSummaryCell(exercise: exercise, exerciseSummaryModel: exerciseSummary[exercise]!)
                         .listRowSeparator(.hidden)
                 }
             }.listStyle(.plain)
+            Text("Total reps: \(exerciseSummary.values.map {$0.reps}.reduce(0, +))")
+            Text("Total time: \(String(format: "%.2f", exerciseSummary.values.map {Double($0.time)!}.reduce(0, +)))")
             Button(action: {
                 selections.removeAll()
                 self.shouldPopToRootView = false
