@@ -76,9 +76,9 @@ class CameraViewController: UIViewController {
     
     override func viewDidLoad() {
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.handleTap(_:)))
-            tapGR.delegate = self
-            tapGR.numberOfTapsRequired = 2
-            view.addGestureRecognizer(tapGR)
+        tapGR.delegate = self
+        tapGR.numberOfTapsRequired = 2
+        view.addGestureRecognizer(tapGR)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -212,9 +212,8 @@ extension CameraViewController: PredictorDelegate {
 extension CameraViewController: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if (self.terminated && flag) {
-            self.selections.removeAll()
-            self.exerciseReps!.reset()
-            self.shouldPopToRootView = false
+            let vc = UIHostingController(rootView: SummaryView(shouldPopToRootView: self.$shouldPopToRootView, exerciseReps: self.exerciseReps!, selections: self.$selections))
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

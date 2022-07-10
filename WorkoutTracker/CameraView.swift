@@ -32,92 +32,93 @@ struct CameraView: View {
     }
     
     var body: some View {
-        VStack {
-            Spacer()
-            if (!selections.isEmpty) {
-                Text(currentExercise)
-                    .onAppear {
-                        self.currentExercise = selections.first!
-                    }
-                    .font(
-                        .largeTitle
-                            .weight(.bold)
-                    )
-                    .foregroundColor(.blue)
-            }
-            ZStack {
-                GeometryReader { geo in
-                    CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView
-                    )
-                    HStack {
-                        Button(action: { showStick = !showStick }) {
-                            if showStick {
-                                Image(systemName: "person.fill")
-                                    .font(.system(size: 30.0))
-                            } else {
-                                Image(systemName: "person")
-                                    .font(.system(size: 30.0))
-                            }
+        if (self.shouldPopToRootView) {
+            VStack {
+                Spacer()
+                if (!selections.isEmpty) {
+                    Text(currentExercise)
+                        .onAppear {
+                            self.currentExercise = selections.first!
                         }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("\(repCounter)/\(repGoal)")
+                        .font(
+                            .largeTitle
+                                .weight(.bold)
+                        )
+                        .foregroundColor(.blue)
+                }
+                ZStack {
+                    GeometryReader { geo in
+                        CameraViewWrapper(exerciseReps: exerciseReps, selections: $selections, currentExercise: $currentExercise, poseEstimator: poseEstimator, repCounter: $repCounter, repGoal: $repGoal, index: $index, shouldPopToRootView: $shouldPopToRootView
+                        )
+                        HStack {
+                            Button(action: { showStick = !showStick }) {
+                                if showStick {
+                                    Image(systemName: "person.fill")
+                                        .font(.system(size: 30.0))
+                                } else {
+                                    Image(systemName: "person")
+                                        .font(.system(size: 30.0))
+                                }
+                            }
                             .padding()
-                            .font(.system(size: 30, weight: .heavy, design: .default))
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(repCounter)/\(repGoal)")
+                                .padding()
+                                .font(.system(size: 30, weight: .heavy, design: .default))
+                                .foregroundColor(.blue)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                        if showStick {
+                            StickFigureView(poseEstimator: poseEstimator, size: geo.size)
+                        }
                     }
-                    if showStick {
-                        StickFigureView(poseEstimator: poseEstimator, size: geo.size)
-                    }
+                }
+                if (index == selections.count - 1) {
+                    NavigationLink(destination: SummaryView(shouldPopToRootView: $shouldPopToRootView, exerciseReps: exerciseReps, selections: $selections), label: {
+                        Text("Finish")
+                            .bold()
+                            .frame(width: 280, height: 50)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    })
+                    .isDetailLink(false)
+                } else {
+                    Button(action: {
+                        index += 1
+                        currentExercise = selections[index]
+                        repGoal = exerciseReps.exercisesReps[currentExercise]!
+                        repCounter = 0
+                        playSound(currentExercise)
+                    }) {
+                        Text("Next")
+                            .bold()
+                            .frame(width: 280, height: 50)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                        
+                    }.padding()
                 }
             }
-            Button(action: {
-                if (index == selections.count - 1) {
-                    selections.removeAll()
-                    exerciseReps.reset()
-                    playSound("Terminated")
-                    self.shouldPopToRootView = false
-                } else {
-                    index += 1
-                    currentExercise = selections[index]
-                    repGoal = exerciseReps.exercisesReps[currentExercise]!
-                    repCounter = 0
-                    playSound(currentExercise)
-                }
-            }) {
-                if (index == selections.count - 1) {
-                    Text("Finish")
-                        .bold()
-                        .frame(width: 280, height: 50)
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                } else {
-                    Text("Next")
-                        .bold()
-                        .frame(width: 280, height: 50)
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
-            }.padding()
+        } else {
+            EmptyView()
         }
     }
     
     func playSound(_ exercise: String) {
         guard let url = Bundle.main.url(forResource: exercise, withExtension: "m4a") else { return }
-
+        
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
-
+            
             audioSession = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.m4a.rawValue)
-
+            
             guard let audioSession = audioSession else { return }
-
+            
             audioSession.play()
-
+            
         } catch let error {
             print(error.localizedDescription)
         }
