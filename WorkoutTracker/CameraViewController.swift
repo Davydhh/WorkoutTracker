@@ -205,6 +205,7 @@ extension CameraViewController: PredictorDelegate {
                 } else {
                     print("Workout completed")
                     self.exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
+                    self.exerciseReps!.reset()
                     terminated = true
                     playSound("Terminated")
                 }
@@ -220,7 +221,7 @@ extension CameraViewController: PredictorDelegate {
 extension CameraViewController: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if (self.terminated && flag) {
-            let vc = UIHostingController(rootView: SummaryView(shouldPopToRootView: self.$shouldPopToRootView, exerciseReps: self.exerciseReps!, selections: self.$selections, exerciseSummary: $exerciseSummary))
+            let vc = UIHostingController(rootView: SummaryView(shouldPopToRootView: self.$shouldPopToRootView, selections: self.$selections, exerciseSummary: $exerciseSummary))
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

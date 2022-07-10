@@ -78,12 +78,13 @@ struct CameraView: View {
                 }
                 if (index == selections.count - 1) {
                     VStack {
-                        NavigationLink(destination: SummaryView(shouldPopToRootView: $shouldPopToRootView, exerciseReps: exerciseReps, selections: $selections, exerciseSummary: $exerciseSummary), isActive: $hasFinished) {
+                        NavigationLink(destination: SummaryView(shouldPopToRootView: $shouldPopToRootView, selections: $selections, exerciseSummary: $exerciseSummary), isActive: $hasFinished) {
                             EmptyView()
                         }
                         .isDetailLink(false)
                         Button(action: {
                             exerciseSummary[currentExercise] = ExerciseSummaryModel(reps: repGoal, time: String(format: "%.2f", (Date().timeIntervalSince( self.startTime))))
+                            exerciseReps.reset()
                             self.hasFinished = true
                         }) {
                             Text("Finish")

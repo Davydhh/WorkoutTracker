@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SummaryView: View {
     @Binding var shouldPopToRootView: Bool
-    @ObservedObject var exerciseReps: ExerciseRepModel
     @Binding var selections: [String]
     @Binding var exerciseSummary: [String: ExerciseSummaryModel]
     
@@ -23,7 +22,6 @@ struct SummaryView: View {
             }.listStyle(.plain)
             Button(action: {
                 selections.removeAll()
-                exerciseReps.reset()
                 self.shouldPopToRootView = false
             }) {
                 Text("Start")
@@ -51,6 +49,6 @@ struct SummaryViewPreviewWrapper: View {
     @State(initialValue: ["Pull Up": ExerciseSummaryModel(reps: 0, time: "0.00")]) var exerciseSummary
     
     var body: some View {
-        SummaryView(shouldPopToRootView: $isActive, exerciseReps: ExerciseRepModel(), selections: $selections, exerciseSummary: $exerciseSummary)
+        SummaryView(shouldPopToRootView: $isActive, selections: $selections, exerciseSummary: $exerciseSummary)
     }
 }
