@@ -20,8 +20,16 @@ struct SummaryView: View {
                         .listRowSeparator(.hidden)
                 }
             }.listStyle(.plain)
-            Text("Total reps: \(exerciseSummary.values.map {$0.reps}.reduce(0, +))")
-            Text("Total time: \(String(format: "%.2f", exerciseSummary.values.map {Double($0.time)!}.reduce(0, +)))")
+            HStack {
+                VStack(spacing: 8) {
+                    Text("Total reps")
+                    Text(String(exerciseSummary.values.map {$0.reps}.reduce(0, +)))
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                VStack(spacing: 8) {
+                    Text("Total time")
+                    Text(secondsToHoursMinutesSeconds(exerciseSummary.values.map { Double($0.time)!}.reduce(0, +)))
+                }.frame(maxWidth: .infinity, alignment: .trailing)
+            }.padding()
             Button(action: {
                 selections.removeAll()
                 self.shouldPopToRootView = false
@@ -35,7 +43,13 @@ struct SummaryView: View {
                 
             }.padding()
         }
-        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Summary")
+    }
+    
+    func secondsToHoursMinutesSeconds(_ seconds: Double) -> String {
+        let s = Int(seconds)
+        return "\(s / 3600)h \(s % 3600 / 60)m \(s % 3600 % 60)s"
     }
 }
 
