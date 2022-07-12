@@ -23,18 +23,22 @@ struct SummaryView: View {
             HStack {
                 VStack(spacing: 8) {
                     Text("Total reps")
-                        .font(.largeTitle)
+                        .font(
+                            .system(size: 25, weight: .light)
+                        )
                     Text(String(exerciseSummary.values.map {$0.reps}.reduce(0, +)))
                 }.frame(maxWidth: .infinity, alignment: .leading)
                     .font(
-                        .system(size: 34, weight: .semibold)
+                        .system(size: 23, weight: .semibold)
                     )
                 VStack(spacing: 8) {
                     Text("Total time")
-                        .font(.largeTitle)
+                        .font(
+                            .system(size: 25, weight: .light)
+                        )
                     Text(secondsToHoursMinutesSeconds(exerciseSummary.values.map { Double($0.time)!}.reduce(0, +)))
                         .font(
-                            .system(size: 34, weight: .semibold)
+                            .system(size: 23, weight: .semibold)
                         )
                 }.frame(maxWidth: .infinity, alignment: .trailing)
             }.padding()
