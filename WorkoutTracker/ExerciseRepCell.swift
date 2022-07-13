@@ -29,18 +29,20 @@ struct ExerciseRepCell: View {
                         Button(action: {
                             guard let reps = exerciseRepModel.exercisesReps[exercise] else { return }
                             
-                            guard reps <= 1 else {
-                                showingAlert = false
-                                exerciseRepModel.decrementReps(name: exercise)
+                            print(reps)
+                            
+                            guard reps > 1 else {
+                                showingAlert = true
                                 return
                             }
                             
-                            showingAlert = true
+                            showingAlert = false
+                            exerciseRepModel.decrementReps(name: exercise)
                         }) {
                             Text("-")
                                 .font(.title)
                         }
-                        .alert("Reps can't be less equal to zero", isPresented: $showingAlert) {
+                        .alert("Invalid number", isPresented: $showingAlert) {
                             Button("OK", role: .cancel) { }
                         }
                         .buttonStyle(RepsButton())
@@ -50,14 +52,14 @@ struct ExerciseRepCell: View {
                         .keyboardType(.numberPad)
                         .onReceive(Just(String(exerciseRepModel.exercisesReps[exercise] ?? -1))) { newValue in
                                                         
-                            guard newValue == "-1" else {
-                                if newValue.count > 3 {
-                                    exerciseRepModel.exercisesReps[exercise] = Int(String(newValue.prefix(3))) ?? 1
-                                }
+                            guard newValue != "-1" else {
+                                exerciseRepModel.exercisesReps[exercise] = 1
                                 return
                             }
                             
-                            exerciseRepModel.exercisesReps[exercise] = 1
+                            if newValue.count > 3 {
+                                exerciseRepModel.exercisesReps[exercise] = Int(String(newValue.prefix(3))) ?? 1
+                            }
                         }
                         .frame(maxWidth: 100)
                         .foregroundColor(.white)
@@ -68,18 +70,18 @@ struct ExerciseRepCell: View {
                         Button(action: {
                             guard let reps = exerciseRepModel.exercisesReps[exercise] else { return }
                             
-                            guard reps >= 999 else {
-                                showingAlert = false
-                                exerciseRepModel.incrementReps(name: exercise)
+                            guard reps < 999 else {
+                                showingAlert = true
                                 return
                             }
                             
-                            showingAlert = true
+                            showingAlert = false
+                            exerciseRepModel.incrementReps(name: exercise)
                         }) {
                             Text("+")
                                 .font(.title)
                         }
-                        .alert("Reps can't be less equal to zero", isPresented: $showingAlert) {
+                        .alert("Invalid number", isPresented: $showingAlert) {
                             Button("OK", role: .cancel) { }
                         }
                         .buttonStyle(RepsButton())
@@ -93,12 +95,12 @@ struct ExerciseRepCell: View {
                     
                     let reps = exerciseRepModel.exercisesReps[exercise] ?? 1
                     
-                    guard reps > 999 else {
-                        exerciseRepModel.exercisesReps[exercise] = reps
+                    guard reps < 999 else {
+                        exerciseRepModel.exercisesReps[exercise] = 999
                         return
                     }
                     
-                    exerciseRepModel.exercisesReps[exercise] = 999
+                    exerciseRepModel.exercisesReps[exercise] = reps
                 }
                 .buttonStyle(PlainButtonStyle())
             }
